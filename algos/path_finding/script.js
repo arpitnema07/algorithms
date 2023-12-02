@@ -6,7 +6,7 @@ let startingPointY = 15;
 let endingPointX = 9;
 let endingPointY = 27;
 
-let speed = 10;
+let speed = 100;
 
 // it will show whether visualization is currently in process or not.
 let currentlyRunning = false;
@@ -31,7 +31,10 @@ class PriorityQueue {
   add(element) {
     this.values.push(element);
     let index = this.values.length - 1;
-    while (index >= 1 && this.comparator(this.values[index], this.values[Math.floor(index / 2)])) {
+    while (
+      index >= 1 &&
+      this.comparator(this.values[index], this.values[Math.floor(index / 2)])
+    ) {
       [this.values[index], this.values[Math.floor(index / 2)]] = [
         this.values[Math.floor(index / 2)],
         this.values[index],
@@ -40,12 +43,15 @@ class PriorityQueue {
     }
   }
   getTop() {
-    if (this.isEmpty()) return 'No elements in priority queue';
+    if (this.isEmpty()) return "No elements in priority queue";
     return this.values[0];
   }
   pop() {
-    if (this.isEmpty()) return 'Underflow';
-    [this.values[0], this.values[this.values.length - 1]] = [this.values[this.values.length - 1], this.values[0]];
+    if (this.isEmpty()) return "Underflow";
+    [this.values[0], this.values[this.values.length - 1]] = [
+      this.values[this.values.length - 1],
+      this.values[0],
+    ];
     this.values.pop();
 
     let element = this.values[0];
@@ -53,15 +59,30 @@ class PriorityQueue {
     while (index * 2 + 1 < this.values.length) {
       let leftNode = this.defaultNode;
       let rightNode = this.defaultNode;
-      if (index * 2 + 1 < this.values.length) leftNode = this.values[index * 2 + 1];
-      if (index * 2 + 2 < this.values.length) rightNode = this.values[index * 2 + 2];
+      if (index * 2 + 1 < this.values.length)
+        leftNode = this.values[index * 2 + 1];
+      if (index * 2 + 2 < this.values.length)
+        rightNode = this.values[index * 2 + 2];
 
-      if (this.comparator(element, rightNode) && this.comparator(element, leftNode)) break;
-      if (index * 2 + 2 === this.values.length || this.comparator(leftNode, rightNode)) {
-        [this.values[index], this.values[index * 2 + 1]] = [this.values[index * 2 + 1], this.values[index]];
+      if (
+        this.comparator(element, rightNode) &&
+        this.comparator(element, leftNode)
+      )
+        break;
+      if (
+        index * 2 + 2 === this.values.length ||
+        this.comparator(leftNode, rightNode)
+      ) {
+        [this.values[index], this.values[index * 2 + 1]] = [
+          this.values[index * 2 + 1],
+          this.values[index],
+        ];
         index = index * 2 + 1;
       } else {
-        [this.values[index], this.values[index * 2 + 2]] = [this.values[index * 2 + 2], this.values[index]];
+        [this.values[index], this.values[index * 2 + 2]] = [
+          this.values[index * 2 + 2],
+          this.values[index],
+        ];
         index = index * 2 + 2;
       }
     }
@@ -102,12 +123,12 @@ const init = () => {
 
   const drag = (e) => {
     mouseIsDown = false;
-    e.dataTransfer.setData('sourceId', e.target.id);
+    e.dataTransfer.setData("sourceId", e.target.id);
   };
 
   const drop = (e) => {
     e.preventDefault();
-    let sourceId = e.dataTransfer.getData('sourceId');
+    let sourceId = e.dataTransfer.getData("sourceId");
     let targetId = e.target.id;
 
     var src = document.getElementById(sourceId);
@@ -116,13 +137,13 @@ const init = () => {
     let tarY = Number.parseInt(tar.id.substr(4, 2));
     if (!src || !tar) return;
     if (
-      (src.className === 'startPoint' && tar.className === 'endPoint') ||
-      (src.className === 'endPoint' && tar.className === 'startPoint')
+      (src.className === "startPoint" && tar.className === "endPoint") ||
+      (src.className === "endPoint" && tar.className === "startPoint")
     ) {
       [startingPointX, endingPointX] = [endingPointX, startingPointX];
       [startingPointY, endingPointY] = [endingPointY, startingPointY];
     } else {
-      if (src.className === 'startPoint') {
+      if (src.className === "startPoint") {
         startingPointX = tarX;
         startingPointY = tarY;
       } else {
@@ -139,25 +160,25 @@ const init = () => {
     [src.id, tar.id] = [tar.id, src.id];
   };
   const createGrid = (rows, cols, callback) => {
-    let grid = document.createElement('table');
-    grid.className = 'grid';
+    let grid = document.createElement("table");
+    grid.className = "grid";
 
     for (let i = 0; i < rows; i++) {
-      let tr = grid.appendChild(document.createElement('tr'));
+      let tr = grid.appendChild(document.createElement("tr"));
       tr.ondrop = (e) => drop(e);
       tr.ondragover = (e) => allowDrop(e);
 
       for (let j = 0; j < cols; j++) {
-        let cell = tr.appendChild(document.createElement('td'));
+        let cell = tr.appendChild(document.createElement("td"));
         // Unique ID for each cell. if row or cell number is single digit then put 0 infront of it.
-        cell.id = 'r' + ('0' + i).slice(-2) + 'c' + ('0' + j).slice(-2);
+        cell.id = "r" + ("0" + i).slice(-2) + "c" + ("0" + j).slice(-2);
 
         if (i == startingPointX && j == startingPointY) {
-          cell.className = 'startPoint';
+          cell.className = "startPoint";
           cell.draggable = true;
           cell.ondragstart = (e) => drag(e);
         } else if (i == endingPointX && j == endingPointY) {
-          cell.className = 'endPoint';
+          cell.className = "endPoint";
           cell.draggable = true;
           cell.ondragstart = (e) => drag(e);
         }
@@ -165,7 +186,7 @@ const init = () => {
         gridElements[i][j] = cell;
 
         cell.addEventListener(
-          'mouseover',
+          "mouseover",
           () => {
             if (mouseIsDown) callback(cell, i, j);
           },
@@ -173,7 +194,7 @@ const init = () => {
         );
 
         cell.addEventListener(
-          'mousedown',
+          "mousedown",
           () => {
             callback(cell, i, j);
           },
@@ -187,19 +208,19 @@ const init = () => {
   const grid = createGrid(rows, cols, function (el, row, col) {
     if (row == startingPointX && col == startingPointY) {
     } else if (row == endingPointX && col == endingPointY) {
-    } else if (el.className == 'clicked') {
-      el.className = '';
+    } else if (el.className == "clicked") {
+      el.className = "";
       isBlocked[row][col] = 0;
     } else {
-      el.className = 'clicked';
+      el.className = "clicked";
       isBlocked[row][col] = 1;
     }
   });
-  document.getElementById('container').appendChild(grid);
-  document.querySelector('body').addEventListener('mousedown', () => {
+  document.getElementById("container").appendChild(grid);
+  document.querySelector("body").addEventListener("mousedown", () => {
     mouseIsDown = 1;
   });
-  document.querySelector('body').addEventListener('mouseup', () => {
+  document.querySelector("body").addEventListener("mouseup", () => {
     mouseIsDown = 0;
   });
 };
@@ -214,7 +235,8 @@ function sleep(ms) {
 }
 const animate = async (nodesToAnimate, speed) => {
   for (let i = 0; i < nodesToAnimate.length; i++) {
-    gridElements[nodesToAnimate[i].x][nodesToAnimate[i].y].className = 'visited';
+    gridElements[nodesToAnimate[i].x][nodesToAnimate[i].y].className =
+      "visited";
     await sleep(speed);
     if (currentlyRunning == false) {
       clearGrid();
@@ -228,13 +250,13 @@ const generatePath = (path) => {
   let curj = endingPointY;
 
   while (!(curi == startingPointX && curj == startingPointY)) {
-    if (path[curi][curj] == 'D') {
+    if (path[curi][curj] == "D") {
       curi++;
-    } else if (path[curi][curj] == 'U') {
+    } else if (path[curi][curj] == "U") {
       curi--;
-    } else if (path[curi][curj] == 'L') {
+    } else if (path[curi][curj] == "L") {
       curj--;
-    } else if (path[curi][curj] == 'R') {
+    } else if (path[curi][curj] == "R") {
       curj++;
     }
     if (!(curi == startingPointX && curj == startingPointY)) {
@@ -250,7 +272,7 @@ const animatePath = async (path) => {
 
   for (let i = 0; i < pathFromSrcToDest.length; i++) {
     let { x, y } = pathFromSrcToDest[i];
-    gridElements[x][y].className = 'path';
+    gridElements[x][y].className = "path";
     await sleep(speed * 2.5);
 
     if (currentlyRunning === false) {
@@ -269,7 +291,7 @@ const Dijkstra = async () => {
   let dis = new Array(rows);
   for (let i = 0; i < rows; i++) {
     vis[i] = new Array(cols).fill(0);
-    path[i] = new Array(cols).fill('0');
+    path[i] = new Array(cols).fill("0");
     dis[i] = new Array(cols).fill(INF);
   }
   let nodesToAnimate = [];
@@ -289,11 +311,11 @@ const Dijkstra = async () => {
   pq.add({ dis: 0, x: startingPointX, y: startingPointY });
   dis[startingPointX][startingPointY] = 0;
   vis[startingPointX][startingPointY] = 1;
-  path[startingPointX][startingPointY] = '1';
+  path[startingPointX][startingPointY] = "1";
 
   const dx = [1, 0, -1, 0];
   const dy = [0, 1, 0, -1];
-  const direction = ['U', 'L', 'D', 'R'];
+  const direction = ["U", "L", "D", "R"];
 
   while (!pq.isEmpty()) {
     let p = pq.getTop();
@@ -310,7 +332,11 @@ const Dijkstra = async () => {
     for (let i = 0; i < 4; i++) {
       let newX = x + dx[i];
       let newY = y + dy[i];
-      if (isValid(newX, newY) && isBlocked[newX][newY] === 0 && dis[x][y] + 1 < dis[newX][newY]) {
+      if (
+        isValid(newX, newY) &&
+        isBlocked[newX][newY] === 0 &&
+        dis[x][y] + 1 < dis[newX][newY]
+      ) {
         pq.add({
           dis: dis[x][y] + 1,
           x: newX,
@@ -333,7 +359,7 @@ const Dijkstra = async () => {
     foundPath = true;
     await animatePath(path);
   } else {
-    alert('There is no path between starting and ending point');
+    alert("There is no path between starting and ending point");
   }
   currentlyRunning = false;
 };
@@ -343,22 +369,22 @@ const DFS_BFS = async (type) => {
   let path = new Array(rows);
   for (let i = 0; i < rows; i++) {
     vis[i] = new Array(cols).fill(false);
-    path[i] = new Array(cols).fill('0');
+    path[i] = new Array(cols).fill("0");
   }
   let nodesToAnimate = [];
 
   const dq = new Deque();
   dq.push_back([startingPointX, startingPointY]);
   vis[startingPointX][startingPointY] = true;
-  path[startingPointX][startingPointY] = '1';
+  path[startingPointX][startingPointY] = "1";
 
   const dx = [1, 0, -1, 0];
   const dy = [0, 1, 0, -1];
-  const direction = ['U', 'L', 'D', 'R'];
+  const direction = ["U", "L", "D", "R"];
 
   while (!dq.isEmpty()) {
     let x, y;
-    if (type == 'dfs') {
+    if (type == "dfs") {
       [x, y] = dq.pop_back();
     } else {
       [x, y] = dq.pop_front();
@@ -373,7 +399,11 @@ const DFS_BFS = async (type) => {
     for (let i = 0; i < 4; i++) {
       let newX = x + dx[i];
       let newY = y + dy[i];
-      if (isValid(newX, newY) && isBlocked[newX][newY] == 0 && vis[newX][newY] == false) {
+      if (
+        isValid(newX, newY) &&
+        isBlocked[newX][newY] == 0 &&
+        vis[newX][newY] == false
+      ) {
         dq.push_back([newX, newY]);
         vis[newX][newY] = true;
         path[newX][newY] = direction[i];
@@ -390,7 +420,7 @@ const DFS_BFS = async (type) => {
     foundPath = true;
     await animatePath(path);
   } else {
-    alert('There is no path between starting and ending point');
+    alert("There is no path between starting and ending point");
   }
   currentlyRunning = false;
 };
@@ -408,7 +438,7 @@ const AStar = async () => {
   let path = new Array(rows);
   for (let i = 0; i < rows; i++) {
     vis[i] = new Array(cols).fill(0);
-    path[i] = new Array(cols).fill('0');
+    path[i] = new Array(cols).fill("0");
   }
   let nodesToAnimate = [];
 
@@ -419,16 +449,21 @@ const AStar = async () => {
   };
   const pq = new PriorityQueue(defaultNode, AStarComparator);
   pq.add({
-    f: findManhattanDistance(startingPointX, startingPointY, endingPointX, endingPointY),
+    f: findManhattanDistance(
+      startingPointX,
+      startingPointY,
+      endingPointX,
+      endingPointY
+    ),
     x: startingPointX,
     y: startingPointY,
   });
   vis[startingPointX][startingPointY] = 1;
-  path[startingPointX][startingPointY] = '1';
+  path[startingPointX][startingPointY] = "1";
 
   const dx = [1, 0, -1, 0];
   const dy = [0, 1, 0, -1];
-  const direction = ['U', 'L', 'D', 'R'];
+  const direction = ["U", "L", "D", "R"];
 
   while (!pq.isEmpty()) {
     let p = pq.getTop();
@@ -445,7 +480,11 @@ const AStar = async () => {
     for (let i = 0; i < 4; i++) {
       let newX = x + dx[i];
       let newY = y + dy[i];
-      if (isValid(newX, newY) && isBlocked[newX][newY] === 0 && vis[newX][newY] === 0) {
+      if (
+        isValid(newX, newY) &&
+        isBlocked[newX][newY] === 0 &&
+        vis[newX][newY] === 0
+      ) {
         let newNode = {};
         pq.add({
           f: findManhattanDistance(newX, newY, endingPointX, endingPointY),
@@ -467,7 +506,7 @@ const AStar = async () => {
     foundPath = true;
     await animatePath(path);
   } else {
-    alert('There is no path between starting and ending point');
+    alert("There is no path between starting and ending point");
   }
   currentlyRunning = false;
 };
@@ -476,8 +515,11 @@ const removeVisitedCell = () => {
   // remove "visited" and "path"
   for (let i = 0; i < rows; i++) {
     for (let j = 0; j < cols; j++) {
-      if (gridElements[i][j].className == 'visited' || gridElements[i][j].className == 'path') {
-        gridElements[i][j].className = '';
+      if (
+        gridElements[i][j].className == "visited" ||
+        gridElements[i][j].className == "path"
+      ) {
+        gridElements[i][j].className = "";
       }
     }
   }
@@ -488,9 +530,12 @@ const clearGrid = () => {
   currentlyRunning = false;
   for (let i = 0; i < rows; i++) {
     for (let j = 0; j < cols; j++) {
-      if ((i == startingPointX && j == startingPointY) || (i == endingPointX && j == endingPointY));
+      if (
+        (i == startingPointX && j == startingPointY) ||
+        (i == endingPointX && j == endingPointY)
+      );
       else {
-        gridElements[i][j].className = '';
+        gridElements[i][j].className = "";
       }
       isBlocked[i][j] = 0;
     }
@@ -501,18 +546,20 @@ const algorithmCaller = () => {
   if (currentlyRunning == true) {
     return;
   }
-  type = document.getElementById('algorithm_type').value;
+  type = document.getElementById("algorithm_type").value;
   currentlyRunning = true;
   foundPath = false;
   removeVisitedCell();
-  if (type == 'dijkstra') {
+  if (type == "dijkstra") {
     Dijkstra();
-  } else if (type == 'Astar') {
+  } else if (type == "Astar") {
     AStar();
-  } else if (type == 'bfs' || type == 'dfs') {
+  } else if (type == "bfs" || type == "dfs") {
     DFS_BFS(type);
   }
 };
 
-document.getElementById('visualizeButton').addEventListener('click', algorithmCaller);
-document.getElementById('clearButton').addEventListener('click', clearGrid);
+document
+  .getElementById("visualizeButton")
+  .addEventListener("click", algorithmCaller);
+document.getElementById("clearButton").addEventListener("click", clearGrid);
