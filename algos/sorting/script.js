@@ -314,6 +314,7 @@ barSlider.oninput = () => {
   document.querySelector(".sliderValue").innerHTML = `Bars: ${barSlider.value}`;
   generateRandomArray();
 };
+
 speedSlider.oninput = () => {
   delay = 375 - speedSlider.value;
 };
@@ -321,6 +322,7 @@ speedSlider.oninput = () => {
 document
   .getElementById("generateButton")
   .addEventListener("click", generateRandomArray);
+
 document.getElementById("sortButton").addEventListener("click", () => {
   // get the name of selected sorting algorithm.
   type = document.getElementById("sort_type").value;
@@ -340,6 +342,7 @@ document.getElementById("sortButton").addEventListener("click", () => {
   else if (type == "merge") mergeSort();
   else if (type == "quick") quickSort();
 });
+
 document.getElementById("stopButton").addEventListener("click", () => {
   isStopped = true;
   isPaused = false;
@@ -385,7 +388,7 @@ document.getElementById("inputButton").addEventListener("click", () => {
     n = barSlider.value;
     lineWidth = width / n - 1;
     container.innerHTML = "";
-    var inputValue = inputElement.value;
+    var inputValue = inputElement.value.trim();
     inputElement.value = "";
 
     // Split the input value into an array of numbers

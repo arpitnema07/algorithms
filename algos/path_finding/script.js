@@ -8,6 +8,9 @@ let endingPointY = 27;
 
 let speed = 100;
 
+let speedSlider = document.getElementById("speedSlider");
+let delay = 375 - speedSlider.value;
+
 // it will show whether visualization is currently in process or not.
 let currentlyRunning = false;
 let foundPath = false;

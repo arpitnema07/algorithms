@@ -1,19 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Algorithm Visualizer | Binary Search Tree</title>
+    <title>Interactive Algorithm | Binary Search Tree</title>
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
     <div class="container">
       <div id="header">
         <div id="OperationContainer">
-          <input type="text" id="InsertNodeField" placeholder="Enter the number"/>
+          <input
+            type="text"
+            id="InsertNodeField"
+            placeholder="Enter the number"
+          />
           <button type="button" id="InsertButton" class="button">Insert</button>
-          <input type="text" id="DeleteNodeField" placeholder="Enter the number"/>
+          <input
+            type="text"
+            id="DeleteNodeField"
+            placeholder="Enter the number"
+          />
           <button type="button" id="DeleteButton" class="button">Delete</button>
         </div>
-        <a href="/index.html"><div id="title">Algorithm Visualizer</div></a>
+        <a href="/index.html"><div id="title">BST Visualizer</div></a>
       </div>
       <div class="indicator_container">
         <div class="indicator">
@@ -24,10 +32,8 @@
           <div class="indicator_block" id="node"></div>
           <div class=""><p>Node</p></div>
         </div>
-
       </div>
-      <div class="Canvas">
-      </div>
+      <div class="Canvas"></div>
     </div>
 
     <!-- D3.JS -->
